@@ -1,3 +1,5 @@
+from __future__ import print_function
+import random
 
 namefile = open('names.txt')
 idlist = open('dataids.txt')
@@ -5,7 +7,7 @@ usertypes = ['admin', 'customer']
 namelist = []
 loginlist = []
 typelist = []
-devicenamelist = ['fitbit', 'apple watch', 'nike fitness'] 
+devicenamelist = ['Fitbit', 'Nike Wrist'] 
 
 
 csv = open('data.csv', 'w')
@@ -23,7 +25,8 @@ for name in namefile.readlines():
     else:
         print usertypes[1]
     """
-    print name.strip()
+    print(devicenamelist[random.randrange(0,2)]) 
+    #print name.strip()
     loginlist.append(fname[0] + lname[0:4])
     typelist.append(usertypes[1])
 
