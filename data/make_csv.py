@@ -23,7 +23,7 @@ for name in namefile.readlines():
     else:
         print usertypes[1]
     """
-    print fname + str(count)+"@gmail.com"
+    print name.strip()
     loginlist.append(fname[0] + lname[0:4])
     typelist.append(usertypes[1])
 
