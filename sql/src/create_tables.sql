@@ -3,7 +3,8 @@ DROP TABLE Users CASCADE;
 DROP TABLE Data   CASCADE;
 DROP TABLE Source CASCADE;
 DROP TABLE Device CASCADE;
-DROP TABLE Source CASCADE;
+DROP TABLE Privileges CASCADE;
+DROP TABLE File CASCADE;
 
 
 CREATE TABLE Users
@@ -20,8 +21,10 @@ CREATE TABLE Users
 CREATE TABLE Data
 (
     name        char(50),
+    login 	char(50),
     dataId          serial      UNIQUE     NOT NULL,
     sourceId    serial      UNIQUE     NOT NULL,
+    FOREIGN KEY(login) REFERENCES Users(login),
     PRIMARY KEY (dataId)
 );
 
