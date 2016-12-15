@@ -45,7 +45,7 @@ public class DatabaseInterface
             System.exit(-1);
         }
 
-   }//end Connect
+   }//end DatabaseInterface
 
 
 //////////////////////////////////////////////////////////////////////
@@ -220,7 +220,8 @@ public static void main(String[] argc)
 
         System.out.println("Enter password: ");
         String pass = in.readLine();
-
+        
+        db.createUser(db);
 
         if(db.isValidLogin(username, pass))
         {
@@ -265,7 +266,14 @@ public static void main(String[] argc)
 }//end Main
 
 //////////////////////////////////////////////////////////////////////
+// ****************************************************************
 //                   BioMarketDB queries
+// ****************************************************************
+//////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////
+// Checks if login is valid                 
 //////////////////////////////////////////////////////////////////////
 boolean isValidLogin(String uname, String pass)
 {
@@ -287,6 +295,9 @@ boolean isValidLogin(String uname, String pass)
 
 
 
+//////////////////////////////////////////////////////////////////////
+// Checks if login is valid                 
+//////////////////////////////////////////////////////////////////////
 boolean hasPrivilege(String user_login,String data_id)
 {
     try
@@ -337,12 +348,64 @@ public void viewData(String data_id)
         System.out.println("viewData Failed");
     }
 
-}
+}//end viewData
+
+///////////////////////////////////////////////////////////////////////
+//
+// creates a user and returns the type
+//
+///////////////////////////////////////////////////////////////////////
+public void createUser(DatabaseInterface db)
+{
+    try
+    {
+        List<String> info  =new ArrayList<String>();
+        info = getUserInfo();
+        String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", info.get(0), info.get(1), "basic");
+
+        executeQuery(query);
+        System.out.println("user added to database");
+       
+    }
+    catch(Exception e)
+    {
+        
+    }
+
+
+}//createUser
+
+///////////////////////////////////////////////////////////////////////
+//
+// Helper function returns list containing username, passwd in that order
+//
+///////////////////////////////////////////////////////////////////////
+private List<String> getUserInfo()
+{
+    try
+    {
+        System.out.println("Enter Username: ");
+        String uname = in.readLine();
+
+        System.out.println("Enter Password: ");
+        String passwd = in.readLine();
+
+       
+        List<String> info = new ArrayList<String>();
+        info.add(uname);
+        info.add(passwd);
+        return info;
+    }
+    catch(Exception e)
+    {
+       List<String> error = null;
+       return error;
+    }
+
+}//end getUserInfo
 
 
 
 
 
-
-
-}
+}///end DatabaseInterface
