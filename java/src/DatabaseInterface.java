@@ -295,6 +295,7 @@ public static void main(String[] argc)
 		userType = userType.trim();
 		switch(userType)
 		{
+			/////////////// BASIC USER MENU //////////////////////
 			case "basic":
 			while(userMenu)
 			{
@@ -316,6 +317,35 @@ public static void main(String[] argc)
 				}//End readChoice Switch
 				
 			}break;//End While
+
+
+			/////////////// ADMIN USER MENU //////////////////////
+			case "admin":
+			while(userMenu)
+			{
+				System.out.println("*** ADMIN MENU ***");
+				System.out.println("------------------");
+				System.out.println("1. Search Users ");
+				System.out.println("2. Search Data ");
+				System.out.println("3. My Profile ");
+				System.out.println("4. Update User ");
+				System.out.println("5. View Statistics ");
+				System.out.println("6. Exit ");
+
+				switch(readChoice())
+				{
+					case 1: System.out.println("[!] Search Users Called, But Currently Not Implemented. "); break; 
+					case 2: System.out.println("[!] Search Data Called, But Currently Not Implemented. "); break; 
+					case 3: System.out.println("[!] My Profile Called, But Currently Not Implemented. "); break; 
+					case 4: System.out.println("[!] Update User Called, But Currently Not Implemented. "); break; 
+					case 5: System.out.println("[!] View Statistics Called, But Currently Not Implemented. "); break; 
+					case 6: userMenu = false; System.out.println("[!] GoodBye! "); break;
+					default: System.out.println("[-] Invalid Choice. "); break;
+					
+				}//End readChoice Switch
+				
+			}break;//End While
+
 		}//End userType Switch
 		
 	}//End userLogin if
