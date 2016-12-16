@@ -41,11 +41,12 @@ public class DatabaseInterface
         }
         catch(Exception e)
         {
+	    System.out.println(e.getMessage());
             System.out.println("Error Connecting to db: make sure postgres is started");
             System.exit(-1);
         }
 
-   }//end Connect
+   }//end DatabaseInterface
 
 
 //////////////////////////////////////////////////////////////////////
@@ -199,6 +200,25 @@ public void cleanup()
     }
 }
 
+public static int readChoice()
+{
+	int choice;
+	do
+	{
+		System.out.print("[!] Enter Your Choice: "); 
+		try
+		{
+			choice = Integer.parseInt(in.readLine());
+			break;
+		}
+		catch(Exception e)
+		{
+			System.out.println("[-] -- Invalid Input. ");
+			continue;
+		}
+	}while(true);//End do
+	return choice;
+}//End readChoice()
 
 
 //////////////////////////////////////////////////////////////////////
@@ -215,21 +235,6 @@ public static void main(String[] argc)
     {
         DatabaseInterface db = new DatabaseInterface(dbname,dbport, uname, paswd); 
         
-        System.out.println("Enter username: ");
-        String username = in.readLine();
-
-        System.out.println("Enter password: ");
-        String pass = in.readLine();
-
-
-        if(db.isValidLogin(username, pass))
-        {
-            System.out.println("Authenticated!!");
-        }
-        else
-        {
-            System.out.println("Invalid user name or password");
-        }
 
         /*
         //Checking privilages
@@ -254,6 +259,29 @@ public static void main(String[] argc)
         */
 
 
+
+
+
+	boolean menu = true;
+
+	while(menu)
+	{
+		System.out.println("*** MAIN MENU ***");
+		System.out.println("------------------");
+		System.out.println("1. Create User ");
+		System.out.println("2. Log In ");
+		System.out.println("3. EXIT ");
+
+		switch (readChoice())
+		{
+			case 1: db.createUser(); break;
+			case 2: db.login(); break;
+			case 3: menu = false; break;
+			default: System.out.println("---- Invalid Choice ----"); break;
+		}
+	}
+
+	
         db.cleanup();
     }
     catch(Exception e)
@@ -267,7 +295,7 @@ public static void main(String[] argc)
 //////////////////////////////////////////////////////////////////////
 //                   BioMarketDB queries
 //////////////////////////////////////////////////////////////////////
-boolean isValidLogin(String uname, String pass)
+public boolean isValidLogin(String uname, String pass)
 {
    try
    {
@@ -283,11 +311,11 @@ boolean isValidLogin(String uname, String pass)
         System.out.println(String.format("Error in validating login:%s", e.getMessage()));
         return false;
    }   
-}
+}//End isvalidLogin
 
 
 
-boolean hasPrivilege(String user_login,String data_id)
+public boolean hasPrivilege(String user_login,String data_id)
 {
     try
     {
@@ -340,9 +368,42 @@ public void viewData(String data_id)
 }
 
 
+public void createUser()
+{
+	try
+	{
+		System.out.println("Create User Called Successfully.");
+	}
+	catch(Exception e)
+	{
+		System.out.println("[-] --- Creating User Failed.....");
+	}
+}
+
+public void login()
+{
+	try
+	{
+		System.out.println("[!] Enter username: ");
+		String username = in.readLine();
+
+		System.out.println("[!] Enter password: ");
+		String pass = in.readLine();
 
 
-
-
+		if(isValidLogin(username, pass))
+		{
+		    System.out.println("[+] Authentication Successful.");
+		}
+		else
+		{
+		    System.out.println("[-] Invalid user name or password");
+		}
+	}
+	catch(Exception e)
+	{
+		System.out.println("[-] User Login Failed.");
+	}
+}
 
 }
