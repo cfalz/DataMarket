@@ -17,10 +17,6 @@ public class DatabaseInterface
     //connection to database
     private Connection _connection = null;
 
-    //User Login
-    private static String userLogin = null;
-    private static String userType = null;
-
     //keyboard input
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -239,6 +235,25 @@ public static void main(String[] argc)
     {
         DatabaseInterface db = new DatabaseInterface(dbname,dbport, uname, paswd); 
         
+<<<<<<< HEAD
+=======
+        System.out.println("Enter username: ");
+        String username = in.readLine();
+
+        System.out.println("Enter password: ");
+        String pass = in.readLine();
+        
+        db.createUser(db);
+
+        if(db.isValidLogin(username, pass))
+        {
+            System.out.println("Authenticated!!");
+        }
+        else
+        {
+            System.out.println("Invalid user name or password");
+        }
+>>>>>>> ca4bd9a41f62541d0e5360a6575aa05f253b5e8b
 
         /*
         //Checking privilages
@@ -267,7 +282,6 @@ public static void main(String[] argc)
 
 
 	boolean menu = true;
-	greeting();
 
 	while(menu)
 	{
@@ -277,50 +291,15 @@ public static void main(String[] argc)
 		System.out.println("2. Log In ");
 		System.out.println("3. EXIT ");
 
-		//Reset User Login 
-		userLogin = null;
-
 		switch (readChoice())
 		{
-			case 1: db.createUser(db); break;
-			case 2: db.login(db); break;
-			case 3: menu = false; System.out.println("[!] GoodBye! "); break;
-			default: System.out.println("[-] Invalid Choice. "); break;
-		}//End Switch
+			case 1: db.createUser(); break;
+			case 2: db.login(); break;
+			case 3: menu = false; break;
+			default: System.out.println("---- Invalid Choice ----"); break;
+		}
+	}
 
-	
-	if(userLogin != null)
-	{
-		boolean userMenu = true;
-		userType = userType.trim();
-		switch(userType)
-		{
-			case "basic":
-			while(userMenu)
-			{
-				System.out.println("*** MENU ***");
-				System.out.println("------------------");
-				System.out.println("1. Search Users ");
-				System.out.println("2. Search Data ");
-				System.out.println("3. My Profile ");
-				System.out.println("4. Exit ");
-
-				switch(readChoice())
-				{
-					case 1: System.out.println("[!] Search Users Called, But Currently Not Implemented. "); break; 
-					case 2: System.out.println("[!] Search Data Called, But Currently Not Implemented. "); break; 
-					case 3: System.out.println("[!] My Profile Called, But Currently Not Implemented. "); break; 
-					case 4: userMenu = false; System.out.println("[!] GoodBye! "); break;
-					default: System.out.println("[-] Invalid Choice. "); break;
-					
-				}//End readChoice Switch
-				
-			}break;//End While
-		}//End userType Switch
-		
-	}//End userLogin if
-
-	}//End While
 	
         db.cleanup();
     }
@@ -331,22 +310,6 @@ public static void main(String[] argc)
     }
 
 }//end Main
-
-public static void greeting()
-{
-	System.out.println(
-	"\n\n" +
-       "//////////////////////////////////////////////////\n" +
-       "//						//\n" +
-       "//	  WELCOME TO THE BioMe DATAMARKET       //\n" +
-       "//						//\n" +
-       "//      Contributing To The Health Of Others,   //\n" +
-       "//	      One Dataset At A Time.		//\n" + 
-       "//						//\n" +
-       "//////////////////////////////////////////////////\n" +
-	"\n\n");
-	
-}
 
 //////////////////////////////////////////////////////////////////////
 // ****************************************************************
@@ -378,10 +341,14 @@ public boolean isValidLogin(String uname, String pass)
 
 
 
+<<<<<<< HEAD
+public boolean hasPrivilege(String user_login,String data_id)
+=======
 //////////////////////////////////////////////////////////////////////
 // Checks if login is valid                 
 //////////////////////////////////////////////////////////////////////
 boolean hasPrivilege(String user_login,String data_id)
+>>>>>>> ca4bd9a41f62541d0e5360a6575aa05f253b5e8b
 {
     try
     {
@@ -445,19 +412,21 @@ public void createUser(DatabaseInterface db)
         List<String> info  =new ArrayList<String>();
         info = getUserInfo();
         String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", info.get(0), info.get(1), "basic");
-        executeQuery(query);
-        System.out.println("user added to database");
-       
-    }
-    catch(Exception e)
-    {
-	System.out.println("[-] Failed to Create New User. ");
-    }
 
+<<<<<<< HEAD
+public void createUser()
+{
+	try
+	{
+		System.out.println("Create User Called Successfully.");
+	}
+	catch(Exception e)
+	{
+		System.out.println("[-] --- Creating User Failed.....");
+	}
+}
 
-}//createUser
-
-public void login(DatabaseInterface db)
+public void login()
 {
 	try
 	{
@@ -471,8 +440,6 @@ public void login(DatabaseInterface db)
 		if(isValidLogin(username, pass))
 		{
 		    System.out.println("[+] Authentication Successful.");
-		    db.userLogin = username;
-		    db.userType = findType();
 		}
 		else
 		{
@@ -484,6 +451,18 @@ public void login(DatabaseInterface db)
 		System.out.println("[-] User Login Failed.");
 	}
 }
+=======
+        executeQuery(query);
+        System.out.println("user added to database");
+       
+    }
+    catch(Exception e)
+    {
+        
+    }
+
+
+}//createUser
 
 ///////////////////////////////////////////////////////////////////////
 //
@@ -499,6 +478,7 @@ private List<String> getUserInfo()
 
         System.out.println("Enter Password: ");
         String passwd = in.readLine();
+>>>>>>> ca4bd9a41f62541d0e5360a6575aa05f253b5e8b
 
        
         List<String> info = new ArrayList<String>();
@@ -513,22 +493,6 @@ private List<String> getUserInfo()
     }
 
 }//end getUserInfo
-
-public String findType()
-{
-	try
-	{
-		String query = String.format("select Users.type from Users where Users.login = '%s'", userLogin);
-		
-		List<List<String> > typeList = executeQueryAndReturnResult(query);
-		return typeList.get(0).get(0);
-	}
-	catch(Exception e)
-	{
-		System.out.println("[-] Finding User Type Failed.");
-		return null;
-	}
-}
 
 
 
