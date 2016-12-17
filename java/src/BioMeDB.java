@@ -1,7 +1,21 @@
+package biomeDB;
+
 import querycmd.QueryCmd;
+//import dbinterface.Database;
+import menu.Menu;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 
-public class BioMeDB
+
+public class BioMeDB implements Database
 {
 	private QueryCmd _qcmd;
 
@@ -111,7 +125,7 @@ public void viewData(String data_id)
 // creates a user and returns the type
 //
 ///////////////////////////////////////////////////////////////////////
-public void createUser(DatabaseInterface db)
+public void createUser(BioMeDB db)
 {
     try
     {

@@ -46,7 +46,7 @@ public class QueryCmd
 	// createUrl(portOfDatabase, nameofDatabase)
 	// creates the url string for the connection
 	//////////////////////////////////////////////////////////////////////
-   private String createUrl(String dbport, dbname)
+   private String createUrl(String dbport, String dbname)
    {
         String url = "jdbc:postgresql://localhost:" + dbport + "/" + dbname;
         return url;
