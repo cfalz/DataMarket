@@ -26,9 +26,8 @@ public abstract class BaseDatabase
         
     }
 
+    public abstract void createUser(Menu menu);
     public abstract void login(Menu menu);
     public abstract void closeConnection();
-    public abstract void createUser(Menu menu);
-    public abstract 
 
 }

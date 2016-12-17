@@ -10,6 +10,5 @@ public interface Menu
 {
 	//returns username login
 	public List<String> getCreds();
-    public void run();
 
 }
