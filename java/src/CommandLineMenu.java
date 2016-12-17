@@ -1,5 +1,7 @@
-import menu.Menu;
-//import biomeDB.BioMeDB;
+
+package menu;
+
+import dbinterface.*;
 
 import java.util.Scanner;
 import java.io.Console;
@@ -11,10 +13,6 @@ import java.io.*;
 
 public class CommandLineMenu implements Menu
 {
-    //User Login
-    private static String userLogin = null;
-    private static String userType = null;
-    //private Database = new BioMeDB(
     //keyboard input
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -56,15 +54,16 @@ public class CommandLineMenu implements Menu
        String dbport = "5432";
        String uname = "postgres";
        String paswd = "postgres";
+       dbinterface.BaseDatabase db = new dbinterface.BioMeDB(dbname, dbport, uname, paswd); 
+       Menu cmdMenu = new CommandLineMenu();
 
       try
       {
-       Database db = new BioMeDB(dbname, dbport, uname, paswd); 
     
-        boolean menu = true;
+        boolean m = true;
         greeting();
        
-        while(menu)
+        while(m)
         {
             System.out.println("*** MAIN MENU ***");
             System.out.println("------------------");
@@ -72,23 +71,19 @@ public class CommandLineMenu implements Menu
             System.out.println("2. Log In ");
             System.out.println("3. EXIT ");
 
-            //Reset User Login 
-            userLogin = null;
-
             switch (readChoice())
             {
-                case 1: db.createUser(db); break;
-                case 2: db.login(db); break;
-                case 3: menu = false; System.out.println("[!] GoodBye! "); break;
+                case 1: db.createUser(cmdMenu); break;
+                case 2: db.login(cmdMenu); break;
+                case 3: m = false; System.out.println("[!] GoodBye! "); break;
                 default: System.out.println("[-] Invalid Choice. "); break;
             }//End Switch
 
         
-        if(userLogin != null)
+        if(db.getLogin() != null)
         {
             boolean userMenu = true;
-            userType = userType.trim();
-            switch(userType)
+            switch(db.getType())
             {
                 /////////////// BASIC USER MENU //////////////////////
                 case "basic":
@@ -147,7 +142,7 @@ public class CommandLineMenu implements Menu
 
         }//End While
         
-            db.cleanup();
+           db.closeConnection();
         }
         catch(Exception e)
         {
@@ -158,36 +153,6 @@ public class CommandLineMenu implements Menu
     }//End Main
 
 
-////////////////////////////////////////////////////////////////////
-//       login
-////////////////////////////////////////////////////////////////////
-public void login(Database db)
-{
-	try
-	{
-		System.out.println("[!] Enter username: ");
-		String username = in.readLine();
-
-		System.out.println("[!] Enter password: ");
-		String pass = in.readLine();
-
-
-		if(isValidLogin(username, pass))
-		{
-		    System.out.println("[+] Authentication Successful.");
-		    db.userLogin = username;
-		    db.userType = findType();
-		}
-		else
-		{
-		    System.out.println("[-] Invalid user name or password");
-		}
-	}
-	catch(Exception e)
-	{
-		System.out.println("[-] User Login Failed.");
-	}
-}
 
 ////////////////////////////////////////////////////////////////////
 //      greeting 
@@ -207,34 +172,5 @@ public static void greeting()
 	"\n\n");
 	
 }//end greeting
-
-
-
-////////////////////////////////////////////////////////////////////
-//      findType 
-////////////////////////////////////////////////////////////////////
-public String findType()
-{
-	try
-	{
-		String query = String.format("select Users.type from Users where Users.login = '%s'", userLogin);
-		
-		List<List<String> > typeList = executeQueryAndReturnResult(query);
-		return typeList.get(0).get(0);
-	}
-	catch(Exception e)
-	{
-		System.out.println("[-] Finding User Type Failed.");
-		return null;
-	}
-}//end findType
-
-
-
-
-
-
-
-
 
 }//End MenuClass

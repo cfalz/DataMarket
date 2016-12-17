@@ -1,9 +1,8 @@
-package biomeDB;
+package dbinterface;
 
 import querycmd.QueryCmd;
-//import dbinterface.Database;
+import dbinterface.BaseDatabase;
 import menu.Menu;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,12 +14,15 @@ import java.util.ArrayList;
 
 
 
-public class BioMeDB implements Database
+public class BioMeDB extends BaseDatabase
 {
 	private QueryCmd _qcmd;
+    private String userLogin = null;
+    private String userType = null;
 
 	public BioMeDB(String dbname, String dbport, String user, String passwd) throws SQLException
 	{
+        super(dbname,dbport,user,passwd);
 		try
 		{
 			_qcmd = new QueryCmd(dbname, dbport, user, passwd);
@@ -33,6 +35,14 @@ public class BioMeDB implements Database
             System.exit(-1);	
 		}
 	}
+    public String getLogin()
+    {
+        return userLogin.trim();
+    }
+    public String getType()
+    {
+        return userType.trim();
+    }
 
 
 //////////////////////////////////////////////////////////////////////
@@ -125,12 +135,11 @@ public void viewData(String data_id)
 // creates a user and returns the type
 //
 ///////////////////////////////////////////////////////////////////////
-public void createUser(BioMeDB db)
+public void createUser(Menu menu)
 {
     try
     {
         List<String> info  =new ArrayList<String>();
-        info = getUserInfo();
         String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", info.get(0), info.get(1), "basic");
         _qcmd.executeQuery(query);
         System.out.println("user added to database");
@@ -144,7 +153,7 @@ public void createUser(BioMeDB db)
 }//createUser
 
 //Todo implement Menu getCreds() returns a List<String>[username, password]
-public void login(BioMeDB db, Menu menu)
+public void login(Menu menu)
 {
 	try
 	{
@@ -156,8 +165,8 @@ public void login(BioMeDB db, Menu menu)
 		if(isValidLogin(username, pass))
 		{
 		    System.out.println("[+] Authentication Successful.");
-		    db.userLogin = username;
-		    db.userType = findType();
+		    userLogin = username;
+		    userType = findType();
 		}
 		else
 		{
@@ -187,5 +196,9 @@ public String findType()
 	}
 }
 
+public void closeConnection()
+{
+    _qcmd.cleanup();
+}
 
 }//end BioMeDB
