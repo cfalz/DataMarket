@@ -56,16 +56,13 @@ public class CommandLineMenu implements Menu
 
             switch (readChoice())
             {
-                case 1: db.createUser(makeUser()); break;
+                case 1: db.createUser(makeUser()); _user = null; break;
                 case 2: db.login(userInfoMenu()); break;
-                case 3: m = false; System.out.println("[!] GoodBye! "); break;
+                case 3: m = false; System.out.println("[!] GoodBye! ");_user=null; break;
                 default: System.out.println("[-] Invalid Choice. "); break;
             }//End Switch
-
-        System.out.println("[!] Checking user login.");
-        System.out.println("[!] User login is currently: " + _user.getLogin() + ".");
         
-        if(_user.getLogin() != null)
+        if(_user != null)
         {
             boolean userMenu = true;
             switch(_user.getType())
@@ -86,7 +83,7 @@ public class CommandLineMenu implements Menu
                         case 1: System.out.println("[!] Search Users Called, But Currently Not Implemented. "); break; 
                         case 2: System.out.println("[!] Search Data Called, But Currently Not Implemented. "); break; 
                         case 3: System.out.println("[!] My Profile Called, But Currently Not Implemented. "); break; 
-                        case 4: userMenu = false; System.out.println("[!] GoodBye! "); break;
+                        case 4: userMenu = false; System.out.println("[!] GoodBye! "); _user = null; break;
                         default: System.out.println("[-] Invalid Choice. "); break;
                         
                     }//End readChoice Switch
@@ -114,12 +111,17 @@ public class CommandLineMenu implements Menu
                         case 3: System.out.println("[!] My Profile Called, But Currently Not Implemented. "); break; 
                         case 4: System.out.println("[!] Update User Called, But Currently Not Implemented. "); break; 
                         case 5: System.out.println("[!] View Statistics Called, But Currently Not Implemented. "); break; 
-                        case 6: userMenu = false; System.out.println("[!] GoodBye! "); break;
+                        case 6: userMenu = false; System.out.println("[!] GoodBye! "); _user = null;break;
                         default: System.out.println("[-] Invalid Choice. "); break;
                         
                     }//End readChoice Switch
-                    
+
                 }break;//End While
+                
+
+                ///////////////////// Default ///////////////////////
+                default:
+                    System.out.println("[-] No user type specified");     
 
             }//End userType Switch
             
@@ -203,7 +205,6 @@ private User makeUser()
 
     }
 }
-
 
 
 

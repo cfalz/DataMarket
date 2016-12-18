@@ -122,7 +122,7 @@ public void createUser(User currentUser)
     try
     {
         String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", currentUser.getLogin(), currentUser.getPassword(), "basic");
-        _qcmd.executeQuery(query);
+        _qcmd.executeUpdate(query);
         System.out.println("[+] User Successfully Added.");
        
     }
