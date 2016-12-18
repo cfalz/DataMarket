@@ -1,6 +1,5 @@
-
 package menu;
-
+import User;
 import dbinterface.*;
 
 import java.util.Scanner;
@@ -15,15 +14,7 @@ public class CommandLineMenu implements Menu
 {
     //keyboard input
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-
-    public List<String> getCreds()
-    {
-        System.out.println("getCreds called");
-        List<String> creds = null;
-        creds.add("Implement get Creds!!");
-        return creds;
-    }
+    private User _user = null;
 
     public static int readChoice()
     {
@@ -46,24 +37,12 @@ public class CommandLineMenu implements Menu
     }//End readChoice()
 
 
-
-
-
-
-    public static void main(String[] argc)
+    public void run(BaseDatabase db)
     {
       
-       String dbname = "biomarketdb";
-       String dbport = "5432";
-       String uname = "postgres";
-       String paswd = "postgres";
-
       try
       {
     
-       dbinterface.BioMeDB db = new dbinterface.BioMeDB(dbname, dbport, uname, paswd); 
-       Menu cmdMenu = new CommandLineMenu();
-
         boolean m = true;
         greeting();
        
@@ -77,17 +56,17 @@ public class CommandLineMenu implements Menu
 
             switch (readChoice())
             {
-                case 1: db.createUser(cmdMenu); break;
-                case 2: db.login(cmdMenu); break;
+                case 1: db.createUser(makeUser(_user)); break;
+                case 2: db.login(userInfoMenu(_user); break;
                 case 3: m = false; System.out.println("[!] GoodBye! "); break;
                 default: System.out.println("[-] Invalid Choice. "); break;
             }//End Switch
 
         
-        if(db.getLogin() != null)
+        if(_user.getLogin() != null)
         {
             boolean userMenu = true;
-            switch(db.getType())
+            switch(_user.getType())
             {
                 /////////////// BASIC USER MENU //////////////////////
                 case "basic":
@@ -146,7 +125,7 @@ public class CommandLineMenu implements Menu
 
         }//End While
         
-           db.closeConnection();
+           db.logout();
         }
         catch(Exception e)
         {
@@ -176,5 +155,44 @@ public static void greeting()
 	"\n\n");
 	
 }//end greeting
+
+////////////////////////////////////////////////////////////////////
+//      Login (usrInfoMenu) 
+////////////////////////////////////////////////////////////////////
+private User userInfoMenu(User u)
+{
+        System.out.println("Enter Username: ");
+        String uname = in.readLine();
+
+        System.out.println("Enter Password: ");
+        String pass = in.readLine();
+        u = new User();
+        u.setLogin(uname);
+        u.setPassword(pass);
+
+        return u;
+}
+
+
+////////////////////////////////////////////////////////////////////
+//      makeUser 
+////////////////////////////////////////////////////////////////////
+private User makeUser(User u)
+{
+    userInfoMenu(u);
+    
+    // TODO: add phonenum etc
+    return u;
+}
+
+
+
+
+
+
+
+
+
+
 
 }//End MenuClass

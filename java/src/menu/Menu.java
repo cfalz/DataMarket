@@ -1,4 +1,5 @@
 package menu;
+import dbinterface.BaseDatabase;
 import java.util.Scanner;
 import java.io.Console;
 import java.util.Date;
@@ -9,6 +10,5 @@ import java.io.*;
 public interface Menu
 {
 	//returns username login
-	public List<String> getCreds();
-
+    public void run(BaseDatabase bdb);
 }

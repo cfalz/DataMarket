@@ -27,15 +27,15 @@ public class User
     
     public String getLogin()
     {
-        return this._login
+        return this._login;
     }
     public String getPassword()
     {
-        return this._passwd
+        return this._passwd;
     }
     public String getType()
     {
-        return this._type
+        return this._type;
     }
     
 }//end User
