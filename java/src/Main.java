@@ -1,6 +1,7 @@
 import dbinterface.*;
 import querycmd.*;
 import menu.*;
+import user.*;
 
 
 public class Main
@@ -9,9 +10,9 @@ public class Main
     {
         System.out.println("working");
         CommandLineMenu menu = new CommandLineMenu();
-        //String[] test = null;
-        //menu.main(test);
-        menu.run(dbname, )
+        String[] test = null;
+        menu.main(test);
+        //menu.run(dbname, )
     }
 
 }

@@ -3,6 +3,8 @@ package dbinterface;
 import querycmd.QueryCmd;
 import dbinterface.BaseDatabase;
 import menu.Menu;
+import user.User;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,33 +18,13 @@ import java.util.ArrayList;
 
 public class BioMeDB extends BaseDatabase
 {
-	private QueryCmd _qcmd;
     private String userLogin = null;
     private String userType = null;
 
 	public BioMeDB(String dbname, String dbport, String user, String passwd) throws SQLException
 	{
         super(dbname,dbport,user,passwd);
-		try
-		{
-			_qcmd = new QueryCmd(dbname, dbport, user, passwd);
-
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-            System.out.println("Error Connecting to db: make sure postgres is started");
-            System.exit(-1);	
-		}
 	}
-    public String getLogin()
-    {
-        return userLogin.trim();
-    }
-    public String getType()
-    {
-        return userType.trim();
-    }
 
 
 //////////////////////////////////////////////////////////////////////
@@ -55,11 +37,11 @@ public class BioMeDB extends BaseDatabase
 //////////////////////////////////////////////////////////////////////
 // Checks if login is valid                 
 //////////////////////////////////////////////////////////////////////
-public boolean isValidLogin(String uname, String pass)
+protected boolean isValidLogin(User currentUser)
 {
    try
    {
-   String query = String.format("SELECT name FROM Users WHERE login='%s' AND password='%s'", uname, pass); 
+   String query = String.format("SELECT login FROM Users WHERE login='%s' AND password='%s'", currentUser.getLogin(), currentUser.getPassword()); 
    int result = _qcmd.executeQuery(query);
    if(result>=1)
         return true;
@@ -78,11 +60,11 @@ public boolean isValidLogin(String uname, String pass)
 //////////////////////////////////////////////////////////////////////
 // Checks if login is valid                 
 //////////////////////////////////////////////////////////////////////
-boolean hasPrivilege(String user_login,String data_id)
+boolean hasPrivilege(User currentUser,String data_id)
 {
     try
     {
-        String query = String.format("SELECT * FROM Privileges WHERE login='%s' AND dataid='%s'",user_login, data_id);
+        String query = String.format("SELECT * FROM Privileges WHERE login='%s' AND dataid='%s'",currentUser.getLogin(), data_id);
         int res = _qcmd.executeQuery(query);
         if(res>= 1)
             return true;
@@ -135,14 +117,13 @@ public void viewData(String data_id)
 // creates a user and returns the type
 //
 ///////////////////////////////////////////////////////////////////////
-public void createUser(Menu menu)
+public void createUser(User currentUser)
 {
     try
     {
-        List<String> info  =new ArrayList<String>();
-        String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", info.get(0), info.get(1), "basic");
+        String query = String.format("INSERT INTO Users(login, password, type) VALUES('%s','%s','%s')", currentUser.getLogin(), currentUser.getPassword(), "basic");
         _qcmd.executeQuery(query);
-        System.out.println("user added to database");
+        System.out.println("[+] User Successfully Added.");
        
     }
     catch(Exception e)
@@ -153,20 +134,15 @@ public void createUser(Menu menu)
 }//createUser
 
 //Todo implement Menu getCreds() returns a List<String>[username, password]
-public void login(Menu menu)
+public void login(User currentUser)
 {
 	try
 	{
-		List<String > creds = menu.getCreds();
 
-		String username = creds.get(0);
-		String pass = creds.get(1);
-
-		if(isValidLogin(username, pass))
+		if(isValidLogin(currentUser))
 		{
 		    System.out.println("[+] Authentication Successful.");
-		    userLogin = username;
-		    userType = findType();
+		    currentUser.setType(findType(currentUser));
 		}
 		else
 		{
@@ -180,11 +156,11 @@ public void login(Menu menu)
 }
 
 
-public String findType()
+public String findType(User currentUser)
 {
 	try
 	{
-		String query = String.format("select Users.type from Users where Users.login = '%s'", userLogin);
+		String query = String.format("select Users.type from Users where Users.login = '%s'", currentUser.getLogin());
 		
 		List<List<String> > typeList = _qcmd.executeQueryAndReturnResult(query);
 		return typeList.get(0).get(0);
@@ -196,7 +172,7 @@ public String findType()
 	}
 }
 
-public void closeConnection()
+public void logout()
 {
     _qcmd.cleanup();
 }
