@@ -1,5 +1,5 @@
 package menu;
-import User;
+import user.User;
 import dbinterface.*;
 
 import java.util.Scanner;
@@ -56,12 +56,14 @@ public class CommandLineMenu implements Menu
 
             switch (readChoice())
             {
-                case 1: db.createUser(makeUser(_user)); break;
-                case 2: db.login(userInfoMenu(_user); break;
+                case 1: db.createUser(makeUser()); break;
+                case 2: db.login(userInfoMenu()); break;
                 case 3: m = false; System.out.println("[!] GoodBye! "); break;
                 default: System.out.println("[-] Invalid Choice. "); break;
             }//End Switch
 
+        System.out.println("[!] Checking user login.");
+        System.out.println("[!] User login is currently: " + _user.getLogin() + ".");
         
         if(_user.getLogin() != null)
         {
@@ -159,30 +161,47 @@ public static void greeting()
 ////////////////////////////////////////////////////////////////////
 //      Login (usrInfoMenu) 
 ////////////////////////////////////////////////////////////////////
-private User userInfoMenu(User u)
+private User userInfoMenu()
 {
+        try
+        {
         System.out.println("Enter Username: ");
         String uname = in.readLine();
 
         System.out.println("Enter Password: ");
         String pass = in.readLine();
-        u = new User();
-        u.setLogin(uname);
-        u.setPassword(pass);
+        _user = new User();
+        _user.setLogin(uname);
+        _user.setPassword(pass);
 
-        return u;
+        return _user;
+        }
+        catch(Exception e)
+        {
+            System.out.println("[-] Userinfo failed.");
+            return null;
+        }
 }
 
 
 ////////////////////////////////////////////////////////////////////
 //      makeUser 
 ////////////////////////////////////////////////////////////////////
-private User makeUser(User u)
+private User makeUser()
 {
-    userInfoMenu(u);
+    try
+    {
+        _user = userInfoMenu();
     
     // TODO: add phonenum etc
-    return u;
+    return _user;
+    }
+    catch(Exception e)
+    {
+        System.out.println("[-] Userinfo failed.");
+        return null;
+
+    }
 }
 
 

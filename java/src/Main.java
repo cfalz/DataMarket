@@ -8,11 +8,25 @@ public class Main
 {
     public static void main(String[] argc)
     {
-        System.out.println("working");
+        try
+        {
+        
+        String dbname = "biomarketdb";
+        String port = "5432";
+        String user = "postgres";
+        String password = "postgres";
+
+
+        System.out.println("[!] Setting up Menu and Database...");
         CommandLineMenu menu = new CommandLineMenu();
-        String[] test = null;
-        menu.main(test);
-        //menu.run(dbname, )
+        BioMeDB db = new BioMeDB(dbname, port, user, password);
+
+        menu.run(db);
+        }
+        catch(Exception e)
+        {
+            System.out.println("[-] Failed to run..");
+        }
     }
 
 }
