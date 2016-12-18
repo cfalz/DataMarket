@@ -11,15 +11,15 @@ public class User
 ///////////////////////////////////////////
     public void setLogin(String login)
     {
-       this._login = login; 
+       this._login = login.trim(); 
     }
     public void setPassword(String passwd)
     {
-       this._passwd = passwd; 
+       this._passwd = passwd.trim(); 
     }
     public void setType(String type)
     {
-        this._type = type;
+        this._type = type.trim();
     }
 
 ///////////////////////////////////////////
