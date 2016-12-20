@@ -1,0 +1,40 @@
+Body
+Date,Weight,BMI,Fat
+"2016-12-18","150","22.14","0"
+"2016-12-19","150","22.14","0"
+
+Foods
+Date,Calories In
+"2016-12-18","0"
+"2016-12-19","0"
+
+Activities
+Date,Calories Burned,Steps,Distance,Floors,Minutes Sedentary,Minutes Lightly Active,Minutes Fairly Active,Minutes Very Active,Activity Calories
+"2016-12-18","1,657","0","0","0","1,440","0","0","0","0"
+"2016-12-19","1,064","0","0","0","925","0","0","0","0"
+
+Sleep
+Date,Minutes Asleep,Minutes Awake,Number of Awakenings,Time in Bed
+"2016-12-18","0","0","0","0"
+"2016-12-19","0","0","0","0"
+
+Food Log 20161218
+Daily Totals
+"","Calories","0"
+"","Fat","0 g"
+"","Fiber","0 g"
+"","Carbs","0 g"
+"","Sodium","0 mg"
+"","Protein","0 g"
+"","Water","0 fl oz"
+
+Food Log 20161219
+Daily Totals
+"","Calories","0"
+"","Fat","0 g"
+"","Fiber","0 g"
+"","Carbs","0 g"
+"","Sodium","0 mg"
+"","Protein","0 g"
+"","Water","0 fl oz"
+
